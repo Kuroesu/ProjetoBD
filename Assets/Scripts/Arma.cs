@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Arma : Itens {
 	private int danoBase;
-	public GameObject portador;//serve para ter acesso aos statos do portador(quem segura a arma)
+	public GameObject portadorArma;//serve para ter acesso aos statos do portador(quem segura a arma)
 	private double chanceDeCritico;
 	// Use this for initialization
 	void Start () {
@@ -17,7 +17,6 @@ public class Arma : Itens {
 		return danoBase;
 	}
 	public void setPortador(GameObject portador){
-		portador = portador;
 		Status estatusPortador = portador.GetComponent("Status") as Status;
 		danoBase = status.ataque * estatusPortador.forca;
 		//chanceDeCritico = (estatusPortador.inteligencia * status.velocidade);
@@ -51,13 +50,18 @@ public class Arma : Itens {
 	}*/
 
 	void OnTriggerEnter2D(Collider2D coll) {
-		if (coll.gameObject.tag == "Player" && portador.tag=="inimigo") {
-			PlayerBehavior player = coll.gameObject.GetComponent("PlayerBehavior") as PlayerBehavior;
-			player.tomarDano(getDanoBase());
+        if (coll.gameObject.tag == "Player" && portadorArma.tag=="inimigo") {
+            EnemyBehavior inimigo = portadorArma.GetComponent("EnemyBehavior") as EnemyBehavior;
+            if(inimigo.getEstado() == "attack")//O player só recebe dano se o inimigo estiver no estado de ataque
+            {
+                PlayerBehavior player = coll.gameObject.GetComponent("PlayerBehavior") as PlayerBehavior;
+                inimigo.numDeGolpes = inimigo.numDeGolpes+1;//conta o número de golpes que inimigo realiza
+                player.tomarDano(getDanoBase());
+            }
 		}
 
-		if (coll.gameObject.tag == "inimigo") {
-			EnemyBehavior inimigo = coll.gameObject.GetComponent("EnemyBehavior") as EnemyBehavior;
+		if (coll.gameObject.tag == "inimigo" && portadorArma.tag=="Player") {
+            EnemyBehavior inimigo = coll.gameObject.GetComponent("EnemyBehavior") as EnemyBehavior;
 			inimigo.tomarDano(getDanoBase());
 		}
 		

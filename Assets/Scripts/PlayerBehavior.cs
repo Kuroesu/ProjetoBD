@@ -76,6 +76,11 @@ public class PlayerBehavior : MonoBehaviour {
 	}
 
 	public void tomarDano(int dano){
+        dano = dano - status.defesa;
+        if (dano <= 0)
+        {
+            dano = 1;
+        }
 		HP_Bar hpBar = barraHP.GetComponent ("HP_Bar") as HP_Bar;
 		if (dano >= status.hpAtual) {
 			status.hpAtual = 0;

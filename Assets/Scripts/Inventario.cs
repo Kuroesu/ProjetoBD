@@ -66,8 +66,8 @@ public class Inventario : MonoBehaviour {
 						}
 						else{//um click exibe o status do item
 							Arma armaSelecionada = inventario[i,j].GetComponent("Arma") as Arma;
-						//	Arma arma = armaSelecionada.GetComponent ("Arma") as Arma;
-							//arma.setPortador (objEstatus);
+							Arma arma = armaSelecionada.GetComponent ("Arma") as Arma;
+							arma.setPortador (objEstatus);
 							statusText = "Dano:"+armaSelecionada.getDanoBase();
 						}
 						lastClick = Time.time;
