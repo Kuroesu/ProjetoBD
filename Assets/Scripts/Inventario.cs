@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+
+
 public class Inventario : MonoBehaviour {
 	private GameObject [,] inventario = new GameObject[5,5];//matriz com os itens do heroi
 	public GameObject armaAtual;
@@ -94,8 +96,8 @@ public class Inventario : MonoBehaviour {
 		//Coloca o player como portador da arma
 		armaAtual = Instantiate(item,posicao,posicaoArma.transform.rotation) as GameObject;//instancia a arma na mao do player
 		Arma arma = armaAtual.GetComponent ("Arma") as Arma;
+        arma.portadorArma = player;
 		arma.setPortador (objEstatus);
-		//armaAtual.transform.localScale = posicaoArma.transform.localScale;
 		armaAtual.transform.parent=posicaoArma.transform;//transforma a arma em "filha" do player(assim ela se movera junto com ele)
 		armaAtual.transform.localPosition = new Vector3 (0, 0, 0);
 		armaAtual.transform.localScale = new Vector3 (1, 1, 1);

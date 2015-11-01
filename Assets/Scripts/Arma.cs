@@ -5,8 +5,8 @@ public class Arma : Itens {
 	private int danoBase;
 	public GameObject portadorArma;//serve para ter acesso aos statos do portador(quem segura a arma)
 	private double chanceDeCritico;
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
 	}
 	
 	// Update is called once per frame
@@ -55,18 +55,25 @@ public class Arma : Itens {
             if(inimigo.getEstado() == "attack")//O player só recebe dano se o inimigo estiver no estado de ataque
             {
                 PlayerBehavior player = coll.gameObject.GetComponent("PlayerBehavior") as PlayerBehavior;
-                inimigo.numDeGolpes = inimigo.numDeGolpes+1;//conta o número de golpes que inimigo realiza
+                inimigo.incrementarNumGolpes();//conta o número de golpes que inimigo realiza
                 player.tomarDano(getDanoBase());
             }
 		}
 
 		if (coll.gameObject.tag == "inimigo" && portadorArma.tag=="Player") {
             EnemyBehavior inimigo = coll.gameObject.GetComponent("EnemyBehavior") as EnemyBehavior;
-			inimigo.tomarDano(getDanoBase());
+            PlayerBehavior player = portadorArma.GetComponent("PlayerBehavior") as PlayerBehavior;
+            if (player.getEstado() == "attack") {
+                inimigo.tomarDano(getDanoBase());
+                player.setEstado(Estado_Do_Player.idle);
+            }
+            if (inimigo.getEstado() == "morrer") {
+                player.receberXp(inimigo.getXp());
+                Debug.Log(inimigo.getXp());
+            }
 		}
 		
 	}
-
 
 
 }
