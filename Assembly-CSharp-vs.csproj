@@ -57,6 +57,7 @@
      <Compile Include="Assets\Scripts\Status.cs" />
      <Compile Include="Assets\Scripts\Telas.cs" />
      <Compile Include="Assets\Scripts\TrocaLayer.cs" />
+     <Compile Include="Assets\Scripts\XpBar.cs" />
      <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>

@@ -10,9 +10,9 @@ public enum Estado_Do_Inimigo {
 
 
 public class EnemyBehavior : MonoBehaviour {
-    public GameObject objBarraHP;//guarda o gameObject da barra de hp do inimigo
     public GameObject objStatus;// '' Status do inimigo
     public GameObject objArma;
+    public GameObject objBarraHP;//guarda o gameObject da barra de hp do inimigo
     public int delayAtaque;//Determina o tempo em que o inimigo fica parado após atingir um determinado número de ataques
     private float timer = 0;
     public short numDeAtaquesMax;//Determina quantos ataques o inimigo pode realizar antes de se cansar 
@@ -22,7 +22,6 @@ public class EnemyBehavior : MonoBehaviour {
     public int baseXp;//determina um incremento de xp. Para que mobs deem quantidades diferentes de xp; 
     public int level = 1;//determina o level do personagem
     private Status status;
-    private HP_Bar barraHP;
     private PlayerBehavior player;//variavel que guarda o jogador.
     private Estado_Do_Inimigo estadoAtual;
     private float posicaoDir;
@@ -34,14 +33,12 @@ public class EnemyBehavior : MonoBehaviour {
                             // Use this for initialization
     void Start()
     {
-        status = objStatus.GetComponent("Status") as Status;
-        barraHP = objBarraHP.GetComponent("HP_Bar") as HP_Bar;
-        //player = FindObjectOfType (typeof(PlayerBehavior)) as PlayerBehavior;
+        this.status = objStatus.GetComponent("Status") as Status;
+        this.atribuirPontos();
         Arma armaInimigo = objArma.GetComponent("Arma") as Arma;
         armaInimigo.setPortador(objStatus);
         setEstado(Estado_Do_Inimigo.idle);
         this.posicaoInicial = transform.position;
-        this.atribuirPontos();
     }
 
     // Update is called once per frame
@@ -57,6 +54,7 @@ public class EnemyBehavior : MonoBehaviour {
         if (dano <= 0) {
             dano = 1;//Dano mínimo 
         }
+        HP_Bar barraHP = objBarraHP.GetComponent("HP_Bar") as HP_Bar;
         if (dano >= status.hpAtual) {
             status.hpAtual = 0;
         }
@@ -131,6 +129,7 @@ public class EnemyBehavior : MonoBehaviour {
                 case Estado_Do_Inimigo.morrer:
                     {
                         enemyAnimator.SetBool("morrer", true);
+                        this.player.receberXp(this.getXp());
                         Destroy(gameObject,1);//faz o inimigo desaparecer ao morrer. 1 indica que deve possui um delay de 1 segundo.
                     }
                     break;
@@ -220,5 +219,14 @@ public class EnemyBehavior : MonoBehaviour {
         this.status.defesa = this.status.defesa * this.level;
         this.status.hpAtual = this.status.hp;
     }
+    public int getLevel()
+    {
+        return this.level;
+    }
+    public Status getStatus()
+    {
+        return this.status;
+    }
+
 
 }

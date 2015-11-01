@@ -27,7 +27,7 @@ public class PlayerBehavior : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		status = ObjStatus.GetComponent ("Status") as Status;
+		this.status = ObjStatus.GetComponent ("Status") as Status;
 		posicaoDir = playerAnimator.transform.localScale;
 		posicaoEsq = posicaoDir;
 		posicaoEsq.x = -1 * posicaoDir.x;
@@ -51,9 +51,6 @@ public class PlayerBehavior : MonoBehaviour {
 
 	}
 
-	public Status getStatus(){
-		return status;
-	}
 	private void movimentacao(){
 
 		//Recebe as teclas padrao para o movimento do personagem
@@ -110,7 +107,7 @@ public class PlayerBehavior : MonoBehaviour {
     public void receberXp(float xp)
     {
         this.qtXpAtual = qtXpAtual + xp;
-        if (this.qtXpAtual >= this.qtXpTotal) {
+        while (this.qtXpAtual >= this.qtXpTotal) {
             this.levelUp();
         }
     }
@@ -129,5 +126,23 @@ public class PlayerBehavior : MonoBehaviour {
     public string getEstado()
     {
         return this.estadoAtual.ToString();
+    }
+
+    public float getXpAtual()
+    {
+        return this.qtXpAtual;
+    }
+
+    public float getXpTotal()
+    {
+        return this.qtXpTotal;
+    }
+    public int getLevel()
+    {
+        return this.level;
+    }
+    public Status getStatus()
+    {
+        return this.status;
     }
 }
