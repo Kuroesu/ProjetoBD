@@ -14,6 +14,21 @@ public class Status : MonoBehaviour {
 	public int hpAtual;
 	public int mp;
 	public int mpAtual;
+    public static Status defaut = new Status(2,2,2,2,2,2,2,2);
+
+    public Status(int forc, int def, int velo, int inte, int mag, int ataq, int MP, int HP)
+    {
+        forca = forc;
+        defesa = def;
+        velocidade = velo;
+        inteligencia = inte;
+        magia = mag;
+        ataque = ataq;
+        hp = HP;
+        hpAtual = HP;
+        mp = MP;
+        mpAtual = MP;
+    }
 
 	// Use this for initialization
 	void Start () {
