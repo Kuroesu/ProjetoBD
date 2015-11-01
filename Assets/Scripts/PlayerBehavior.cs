@@ -1,5 +1,11 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
+public enum Estado_Do_Player {
+    idle,
+    attack,
+    morto,
+}
 
 public class PlayerBehavior : MonoBehaviour {
 
@@ -13,6 +19,10 @@ public class PlayerBehavior : MonoBehaviour {
 	private Vector3 posicaoDir;
 	private Vector3 posicaoEsq;
 	public TextMesh teste;
+    private Estado_Do_Player estadoAtual;
+    private int level = 1;//Determina o nível que o personagem se encontra
+    private float qtXpTotal;//Determina quanto de xp o personagem precisa para upar
+    private float qtXpAtual=0;//determina quanto de xp o personagem possui atualmente
 
 
 	// Use this for initialization
@@ -21,6 +31,8 @@ public class PlayerBehavior : MonoBehaviour {
 		posicaoDir = playerAnimator.transform.localScale;
 		posicaoEsq = posicaoDir;
 		posicaoEsq.x = -1 * posicaoDir.x;
+        this.qtXpTotal = this.determinarXp();
+        this.setEstado(Estado_Do_Player.idle);
 	
 	}
 	
@@ -28,12 +40,8 @@ public class PlayerBehavior : MonoBehaviour {
 	void Update () {
 		movimentacao ();
 		if (Input.GetKey(KeyCode.Space)) {
-			attack ();
-		}
-
-		if (Input.GetKeyDown (KeyCode.B)) {//so para testar o dano
-			int dano=10;
-			tomarDano(dano);
+            this.setEstado(Estado_Do_Player.attack);
+            attack ();
 		}
 
 		if (status.hpAtual == 0) {
@@ -76,6 +84,11 @@ public class PlayerBehavior : MonoBehaviour {
 	}
 
 	public void tomarDano(int dano){
+        dano = dano - status.defesa;
+        if (dano <= 0)
+        {
+            dano = 1;
+        }
 		HP_Bar hpBar = barraHP.GetComponent ("HP_Bar") as HP_Bar;
 		if (dano >= status.hpAtual) {
 			status.hpAtual = 0;
@@ -88,4 +101,33 @@ public class PlayerBehavior : MonoBehaviour {
 	private void morrer(){
 		playerAnimator.SetBool ("morto", true);
 	}
+
+    private float determinarXp()
+    {
+       return this.qtXpTotal = 50 * (this.level * Mathf.Log10(this.level)) + 25;
+    }
+
+    public void receberXp(float xp)
+    {
+        this.qtXpAtual = qtXpAtual + xp;
+        if (this.qtXpAtual >= this.qtXpTotal) {
+            this.levelUp();
+        }
+    }
+
+    private void levelUp()
+    {
+        this.level = this.level + 1;
+        this.qtXpTotal = this.determinarXp();
+    }
+
+    public void setEstado(Estado_Do_Player novoEstado)
+    {
+        this.estadoAtual = novoEstado;
+    }
+
+    public string getEstado()
+    {
+        return this.estadoAtual.ToString();
+    }
 }

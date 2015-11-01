@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+
+
 public class Inventario : MonoBehaviour {
     private GameObject[,] inventario = new GameObject[5, 5];//matriz com os itens do heroi
     public GameObject armaAtual;
@@ -63,6 +65,26 @@ public class Inventario : MonoBehaviour {
                         if (Time.time - lastClick < 0.3) {//soh equipa arma ao se dar um "double click"
                             equiparArma(inventario[i, j]);
 
+<<<<<<< HEAD
+						}
+						else{//um click exibe o status do item
+							Arma armaSelecionada = inventario[i,j].GetComponent("Arma") as Arma;
+							Arma arma = armaSelecionada.GetComponent ("Arma") as Arma;
+							arma.setPortador (objEstatus);
+							statusText = "Dano:"+armaSelecionada.getDanoBase();
+						}
+						lastClick = Time.time;
+					}
+				}else{
+					if(GUI.Button (new Rect (40*j, 40*i, 40, 40),""+i+""+j)){
+						//caso nao tenha itens o slot ficara default
+					}
+				}
+			}
+		}
+		GUI.EndGroup();
+		GUI.Box(new Rect(200, 20, 200, 200), statusText);//box de informaçao dos itens
+=======
                         } else {//um click exibe o status do item
                             Arma armaSelecionada = inventario[i, j].GetComponent("Arma") as Arma;
                             //	Arma arma = armaSelecionada.GetComponent ("Arma") as Arma;
@@ -80,9 +102,27 @@ public class Inventario : MonoBehaviour {
         }
         GUI.EndGroup();
         GUI.Box(new Rect(200, 20, 200, 200), statusText);//box de informaçao dos itens
+>>>>>>> cc3c68b4b8b25d2002703c4aaf5bfab774b7e9e2
 
     }
 
+<<<<<<< HEAD
+	void equiparArma(GameObject item){
+		//aqui ficara o cogido resposanvel por equipar os itens 
+		//ao personagem
+		if (armaAtual != null) {//caso ja tenha uma arma equipada ela sera destruida, para que outra a substitua
+			Destroy(armaAtual);
+		}
+		Vector3 posicao = posicaoArma.transform.position;//posicao da arma(precisa ser ajustada)
+		//Coloca o player como portador da arma
+		armaAtual = Instantiate(item,posicao,posicaoArma.transform.rotation) as GameObject;//instancia a arma na mao do player
+		Arma arma = armaAtual.GetComponent ("Arma") as Arma;
+        arma.portadorArma = player;
+		arma.setPortador (objEstatus);
+		armaAtual.transform.parent=posicaoArma.transform;//transforma a arma em "filha" do player(assim ela se movera junto com ele)
+		armaAtual.transform.localPosition = new Vector3 (0, 0, 0);
+		armaAtual.transform.localScale = new Vector3 (1, 1, 1);
+=======
     void equiparArma(GameObject item) {
         //aqui ficara o cogido resposanvel por equipar os itens 
         //ao personagem
@@ -98,6 +138,7 @@ public class Inventario : MonoBehaviour {
         armaAtual.transform.parent = posicaoArma.transform;//transforma a arma em "filha" do player(assim ela se movera junto com ele)
         armaAtual.transform.localPosition = new Vector3(0, 0, 0);
         armaAtual.transform.localScale = new Vector3(1, 1, 1);
+>>>>>>> cc3c68b4b8b25d2002703c4aaf5bfab774b7e9e2
 
     }
 
