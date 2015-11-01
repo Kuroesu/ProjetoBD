@@ -79,15 +79,14 @@
   <ItemGroup>
     <Compile Include="Assets\Arma.cs" />
     <Compile Include="Assets\Scripts\Arma.cs" />
-    <Compile Include="Assets\Scripts\Cadastro.cs" />
     <Compile Include="Assets\Scripts\ConexaoBanco.cs" />
     <Compile Include="Assets\Scripts\EnemyBehavior.cs" />
     <Compile Include="Assets\Scripts\HP_Bar.cs" />
     <Compile Include="Assets\Scripts\Inventario.cs" />
     <Compile Include="Assets\Scripts\Itens.cs" />
-    <Compile Include="Assets\Scripts\Login.cs" />
     <Compile Include="Assets\Scripts\PlayerBehavior.cs" />
     <Compile Include="Assets\Scripts\Status.cs" />
+    <Compile Include="Assets\Scripts\Telas.cs" />
     <Compile Include="Assets\Scripts\TrocaLayer.cs" />
   </ItemGroup>
   <ItemGroup>

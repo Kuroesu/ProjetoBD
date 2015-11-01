@@ -9,7 +9,6 @@ public class TrocaLayer : MonoBehaviour {
     // Use this for initialization
     void Start () {
         render = gameObject.GetComponent<SpriteRenderer>();
-        player = FindObjectOfType(typeof(PlayerBehavior)) as PlayerBehavior;
 	}
 
     // Update is called once per frame
