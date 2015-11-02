@@ -67,10 +67,6 @@ public class Arma : Itens {
                 inimigo.tomarDano(getDanoBase());
                 player.setEstado(Estado_Do_Player.idle);
             }
-            if (inimigo.getEstado() == "morrer") {
-                player.receberXp(inimigo.getXp());
-                Debug.Log(inimigo.getXp());
-            }
 		}
 		
 	}
