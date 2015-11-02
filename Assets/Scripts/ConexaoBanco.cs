@@ -37,14 +37,27 @@ public class ConexaoBanco : MonoBehaviour {
 
     public void inserirPersonagem(string nome, string jogador, Status status) {//insere na tabela status o status do player, em seguida insere o personagem, 
                                                                                //a funcao LAST_INSERT_ID()(funcao do mysql) pega o id do ultimo INSERT executado no caso pega o ID do status
-        cmd.CommandText = "INSERT INTO status(sta_forca,sta_defesa,sta_velocidade,sta_inteligencia," +
+        cmd.CommandText = "INSERT INTO status(sta_forca,sta_defesa,sta_vitalidade,sta_inteligencia," +
                     "sta_magia,sta_ataque,sta_mp,sta_mp_atual,sta_hp,sta_hp_atual)" +
-                    "VALUES(2,2,2,2,2,2,2,2,2,2);" +
+                    "VALUES(@forca, @defesa, @vitalidade, @inteligencia, @magia, @ataque, @mp, @mp_atual, @hp, @hp_atual);" +
 
                     "INSERT INTO personagem(per_nome,per_lvl,per_status,per_jogador)" +
                     "VALUES(@nome,0,LAST_INSERT_ID(),@jogador);";
+
+        cmd.Parameters.AddWithValue("@forca", status.forca);
+        cmd.Parameters.AddWithValue("@defesa", status.defesa);
+        cmd.Parameters.AddWithValue("@vitalidade", status.vitalidade);
+        cmd.Parameters.AddWithValue("@inteligencia", status.inteligencia);
+        cmd.Parameters.AddWithValue("@magia", status.magia);
+        cmd.Parameters.AddWithValue("@ataque", status.ataque);
+        cmd.Parameters.AddWithValue("@mp", status.mp);
+        cmd.Parameters.AddWithValue("@mp_atual", status.mpAtual);
+        cmd.Parameters.AddWithValue("@hp", status.hp);
+        cmd.Parameters.AddWithValue("@hp_atual", status.hpAtual);
+
         cmd.Parameters.AddWithValue("@nome", nome);
         cmd.Parameters.AddWithValue("@jogador", jogador);
+
         con.Open();
         cmd.ExecuteNonQuery();
         con.Close();
@@ -101,14 +114,16 @@ public class ConexaoBanco : MonoBehaviour {
 
         if (reader.HasRows) {
             while (reader.Read()) {
-                lista.Add(reader["sta_forca"].ToString());
-                lista.Add(reader["sta_defesa"].ToString());
-                lista.Add(reader["sta_velocidade"].ToString());
-                lista.Add(reader["sta_inteligencia"].ToString());
-                lista.Add(reader["sta_magia"].ToString());
-                lista.Add(reader["sta_ataque"].ToString());
-                lista.Add(reader["sta_mp"].ToString());
-                lista.Add(reader["sta_hp"].ToString());
+                lista.Add(reader["sta_forca"]);
+                lista.Add(reader["sta_defesa"]);
+                lista.Add(reader["sta_vitalidade"]);
+                lista.Add(reader["sta_inteligencia"]);
+                lista.Add(reader["sta_magia"]);
+                lista.Add(reader["sta_ataque"]);
+                lista.Add(reader["sta_hp"]);
+                lista.Add(reader["sta_hp_atual"]);
+                lista.Add(reader["sta_mp"]);
+                lista.Add(reader["sta_mp_atual"]);
             }
             reader.Close();
             con.Close();
@@ -116,7 +131,5 @@ public class ConexaoBanco : MonoBehaviour {
 
         return lista;
     }
-
-
 
 }
