@@ -215,7 +215,7 @@ public class EnemyBehavior : MonoBehaviour {
         this.status.forca = this.status.forca * this.level;
         this.status.hp = this.status.hp * this.level;
         this.status.inteligencia = this.status.inteligencia * this.level;
-        this.status.velocidade = this.status.velocidade * this.level;
+        this.status.vitalidade = this.status.vitalidade * this.level;
         this.status.defesa = this.status.defesa * this.level;
         this.status.hpAtual = this.status.hp;
     }
