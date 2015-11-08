@@ -96,7 +96,7 @@ public class Inventario : MonoBehaviour {
 		//Coloca o player como portador da arma
 		armaAtual = Instantiate(item,posicao,posicaoArma.transform.rotation) as GameObject;//instancia a arma na mao do player
 		Arma arma = armaAtual.GetComponent ("Arma") as Arma;
-        arma.portadorArma = player;
+        arma.portador = player;
 		arma.setPortador (objEstatus);
 		armaAtual.transform.parent=posicaoArma.transform;//transforma a arma em "filha" do player(assim ela se movera junto com ele)
 		armaAtual.transform.localPosition = new Vector3 (0, 0, 0);

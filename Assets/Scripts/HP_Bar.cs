@@ -49,7 +49,12 @@ public class HP_Bar : MonoBehaviour {
             }
         }
         else if (portadorVida.tag == "inimigo") {
-            this.levelText.text = this.inimigo.getLevel().ToString();
+            if (this.inimigo.getLevel().ToString().Length == 1) {
+                this.levelText.text = 0 + this.inimigo.getLevel().ToString();
+            }
+            else {
+                this.levelText.text = this.player.getLevel().ToString();
+            }
         }
     }
     //calcula o quanto o eixo x vai se desocar na sprite da vida

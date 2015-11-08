@@ -235,7 +235,8 @@ public class Telas : MonoBehaviour {
         GUI.Box(new Rect(330, 175, 50, 25),this.defesa+"");
 
         if (GUI.Button(new Rect(15, altura - 45, 100, 30), "Criar")) {//salva personagem criado no banco de dados;
-            status = new Status(this.forca, this.vitalidade, this.inteligencia);
+            status = new Status();
+            status.distribuirPontos(this.forca, this.vitalidade, this.inteligencia);
             banco.inserirPersonagem(nomePersonagem, jogador, status);
             tipoTela = TipoTelas.selecaoPersonagem;
         }

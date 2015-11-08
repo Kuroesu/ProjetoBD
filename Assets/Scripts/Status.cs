@@ -4,22 +4,29 @@ using System.Collections;
 public class Status : MonoBehaviour {
 
 	private int id;
+    //status base
 	public int forca;
-	public int defesa;
 	public int vitalidade;
-	public int inteligencia;
-	public int magia;
-	public int ataque;
-	public int hp;
-	public int hpAtual;
-	public int mp;
-	public int mpAtual;
-    public static Status defaut = new Status(2,2,2);
+    public int inteligencia;
+    public int defesa;
+    /*escaladores de status
+    public int eForca=1;
+    public int eVitalidade = 1;
+    public int eInteligencia = 1;
+    */
+    //Status derivados
+    public int magia;
+    public int ataque;
+    public int hp;
+    public int hpAtual;
+    public int mp;
+    public int mpAtual;
+    //Atributos que realizão a conexão com o banco
     private ConexaoBanco banco;
     private ArrayList listaStatus;
     private string personagem;
 
-    public Status(int forca, int vitalidade, int inteligencia)
+    public void distribuirPontos(int forca, int vitalidade, int inteligencia)
     {
         this.forca = forca;
         this.inteligencia = inteligencia;
@@ -34,14 +41,13 @@ public class Status : MonoBehaviour {
         this.mpAtual = mp;
     }
 
+
 	// Use this for initialization
 	void Start () {
         if (gameObject.tag == "Player") {
             banco = new ConexaoBanco();
             personagem = PlayerPrefs.GetString("Personagem");
-            print("@@@" + personagem);
             listaStatus = banco.recuperarStatus(personagem);
-
             forca = (int)listaStatus[0];
             defesa = (int)listaStatus[1];
             vitalidade = (int)listaStatus[2];
