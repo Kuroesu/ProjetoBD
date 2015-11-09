@@ -27,10 +27,14 @@ public class EnemyBehavior : MonoBehaviour {
     private float posicaoDir;
     private int numDeGolpes;//responsavel por indicar quantos golpes foram realizados pelo inimigo.
     private bool atrasarAtaque = false;
-    private Vector3 posicaoInicial;
-    public TextMesh teste;
+    private Vector3 posicaoInicial;//Guarda a posição inicial do mob
+    private float qtXpTotal;//Determina quanto de xp o personagem precisa para upar
+    private float qtXpAtual = 0;//determina quanto de xp o personagem possui atualmente
+    private byte contMorte = 0;//Serve como um controle para detectar apenas uma morte do player(evita loop de levelUp)
     float distanciaDoPlayer;//pega a distancia do inimigo para o jogador
                             // Use this for initialization
+    private Boolean estaDefendendo = false;
+
     void Start()
     {
         this.status = objStatus.GetComponent("Status") as Status;
@@ -38,6 +42,7 @@ public class EnemyBehavior : MonoBehaviour {
         Arma armaInimigo = objArma.GetComponent("Arma") as Arma;
         armaInimigo.setPortador(objStatus);
         setEstado(Estado_Do_Inimigo.idle);
+        this.qtXpTotal = this.determinarXp();
         this.posicaoInicial = transform.position;
     }
 
@@ -123,13 +128,19 @@ public class EnemyBehavior : MonoBehaviour {
                         if (status.hpAtual <= 0) {
                             setEstado(Estado_Do_Inimigo.morrer);
                         }
+
+                        if(this.player.getEstado() == "morto" && this.contMorte==0) {
+                            this.receberXp(this.player.getXp());
+                            Debug.Log(this.player.getXp());
+                            this.contMorte = 1;
+                        }
                     }
                     break;
 
                 case Estado_Do_Inimigo.morrer:
                     {
                         enemyAnimator.SetBool("morrer", true);
-                        this.player.receberXp(this.getXp());
+                        this.player.receberXp(this.getXp());//passa o xp para o player
                         Destroy(gameObject,1);//faz o inimigo desaparecer ao morrer. 1 indica que deve possui um delay de 1 segundo.
                     }
                     break;
@@ -228,5 +239,32 @@ public class EnemyBehavior : MonoBehaviour {
         return this.status;
     }
 
+    private void levelUp()
+    {
+        this.level = this.level + 1;
+        this.qtXpTotal = this.determinarXp();
+    }
+
+
+    private float determinarXp()
+    {
+        return this.qtXpTotal = 50 * (this.level * Mathf.Log10(this.level)) + 25;
+    }
+
+    public void receberXp(float xp)
+    {
+        this.qtXpAtual = qtXpAtual + xp;
+        while (this.qtXpAtual >= this.qtXpTotal) {
+            this.levelUp();
+        }
+    }
+    public Boolean getDefendendo()
+    {
+        return this.estaDefendendo;
+    }
+    public void setDefendendo(Boolean booleano)
+    {
+        this.estaDefendendo = booleano;
+    }
 
 }

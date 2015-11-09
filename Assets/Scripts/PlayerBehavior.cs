@@ -18,11 +18,14 @@ public class PlayerBehavior : MonoBehaviour {
 	private bool olharParaDir = true;
 	private Vector3 posicaoDir;
 	private Vector3 posicaoEsq;
-	public TextMesh teste;
+    private int[] statusOriginais = new int[3];
+    public TextMesh teste;
+    private Boolean estaDefendendo = false;
     private Estado_Do_Player estadoAtual;
     private int level = 1;//Determina o nível que o personagem se encontra
     private float qtXpTotal;//Determina quanto de xp o personagem precisa para upar
     private float qtXpAtual=0;//determina quanto de xp o personagem possui atualmente
+    private int pontosParaDistribuir = 0;//armazana a quantidade de pontos para distribuir entre os atributos
 
 
 	// Use this for initialization
@@ -33,19 +36,26 @@ public class PlayerBehavior : MonoBehaviour {
 		posicaoEsq.x = -1 * posicaoDir.x;
         this.qtXpTotal = this.determinarXp();
         this.setEstado(Estado_Do_Player.idle);
+        this.setStatusOriginais(this.status.forca, this.status.vitalidade, this.status.inteligencia);
 	
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		movimentacao ();
-		if (Input.GetKey(KeyCode.Space)) {
-            this.setEstado(Estado_Do_Player.attack);
+		if (Input.GetKeyDown(KeyCode.Space)) {
             attack ();
 		}
 
+        if (Input.GetKey(KeyCode.LeftShift)) {
+            this.defender();
+        }
+        else {
+            this.pararDefesa();
+        }
+
 		if (status.hpAtual == 0) {
-			morrer();
+			this.morrer();
 		}
 
 
@@ -76,10 +86,24 @@ public class PlayerBehavior : MonoBehaviour {
 	}
 
 	private void attack(){
-		playerAnimator.SetTrigger ("attack");
+        this.setEstado(Estado_Do_Player.attack);
+        playerAnimator.SetTrigger ("attack");
 
 	}
-
+    //indica que o player está em condição de defesa
+    private void defender()
+    {
+        this.estaDefendendo = true;
+        SpriteRenderer[] spritesRenderer = GetComponentsInChildren < SpriteRenderer >() as SpriteRenderer[];
+        spritesRenderer[4].sortingOrder=2;
+    }
+    //tira o player da condição de defesa
+    private void pararDefesa()
+    {
+        this.estaDefendendo = false;
+        SpriteRenderer[] spritesRenderer = GetComponentsInChildren<SpriteRenderer>() as SpriteRenderer[];
+        spritesRenderer[4].sortingOrder = 0;
+    }
 	public void tomarDano(int dano){
         dano = dano - status.defesa;
         if (dano <= 0)
@@ -97,8 +121,15 @@ public class PlayerBehavior : MonoBehaviour {
 
 	private void morrer(){
 		playerAnimator.SetBool ("morto", true);
+        this.setEstado(Estado_Do_Player.morto);
 	}
-
+    //determina a quantidade de xp que o player vai dropar ao morrer
+    public float getXp()
+    {
+        float xpDropado = (100 * (Mathf.Log(this.level + 1)));
+        return xpDropado;
+    }
+    //Determina quanto de xp o player precisa para "upar"
     private float determinarXp()
     {
        return this.qtXpTotal = 50 * (this.level * Mathf.Log10(this.level)) + 25;
@@ -116,6 +147,7 @@ public class PlayerBehavior : MonoBehaviour {
     {
         this.level = this.level + 1;
         this.qtXpTotal = this.determinarXp();
+        this.pontosParaDistribuir = pontosParaDistribuir + 1;
     }
 
     public void setEstado(Estado_Do_Player novoEstado)
@@ -144,5 +176,33 @@ public class PlayerBehavior : MonoBehaviour {
     public Status getStatus()
     {
         return this.status;
+    }
+    public Boolean getDefendendo()
+    {
+        return this.estaDefendendo;
+    }
+    public void setDefendendo(Boolean booleano)
+    {
+        this.estaDefendendo = booleano;
+    }
+    public int getPontosParaDistribuir()
+    {
+        return this.pontosParaDistribuir;
+    }
+
+    public void setPontosParaDistribuir(int valor)
+    {
+        this.pontosParaDistribuir = valor;
+    }
+    public int[] getStatusOriginais()
+    {
+        return this.statusOriginais;
+    }
+
+    public void setStatusOriginais(int novaForca,int novaVit, int novaInt)
+    {
+        this.statusOriginais[0] = novaForca;
+        this.statusOriginais[1] = novaVit;
+        this.statusOriginais[2] = novaInt;
     }
 }
